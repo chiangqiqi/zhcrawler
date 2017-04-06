@@ -6,7 +6,7 @@ import requests
 import re
 from bs4 import BeautifulSoup
 import http
-from config import headers
+from .config import headers
 
 session = requests.Session()
 session.cookies = http.cookiejar.LWPCookieJar('cookies')
@@ -24,13 +24,6 @@ class Question:
         if title != None: self.title = title
 
     def parser(self):
-        headers = {
-            'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36",
-            'Host': "www.zhihu.com",
-            'Origin': "http://www.zhihu.com",
-            'Pragma': "no-cache",
-            'Referer': "http://www.zhihu.com/"
-        }
         r = session.get(self.url,headers=headers, verify=False)
         self.soup = BeautifulSoup(r.content, "lxml")
 
@@ -64,7 +57,8 @@ class Question:
         return topics
 
     def get_all_answers(self):
-        
+        pass
+
     def get_top_i_answers(self, n):
         # if n > self.get_answers_num():
         # n = self.get_answers_num()
@@ -81,7 +75,5 @@ class Question:
             return answer
 
     def get_visit_times(self):
-        if self.soup == None:
-            self.parser()
         soup = self.soup
         return int(soup.find("meta", itemprop="visitsCount")["content"])
